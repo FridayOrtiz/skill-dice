@@ -27,7 +27,7 @@ class RollSkill(MycroftSkill):
 
     def handle_roll_intent(self, message):
         dice = message.data.get("Dice")
-        if "d" in dice:
+        if "sided" not in dice and "d" in dice:
             feedback = self.feedback[randrange(len(self.feedback))]
             dice = dice.split("d")
             dice_phrase = dice[0] + " " + dice[1] + " sided dice"
@@ -44,10 +44,11 @@ class RollSkill(MycroftSkill):
         elif "sided" in dice:
             feedback = self.feedback[randrange(len(self.feedback))]
             dice = dice.split("sided")
+            dice = dice[0].split(" ")
             dice_phrase = dice[0] + " " + dice[1] + " sided dice"
             dice_array = []
             for i in range(int(dice[0])):
-                dice_array.appent(randint(1, int(dice[1])))
+                dice_array.append(randint(1, int(dice[1])))
             dice_string = ''
             for i in dice_array:
                 dice_string = dice_string + " " + str(i)
