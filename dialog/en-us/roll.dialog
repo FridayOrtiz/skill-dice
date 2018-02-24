@@ -1,1 +1,8 @@
-I rolled <dice> and got <results>
+I rolled <num> <sides> sided dice, and got <results>, for a total of <total>.
+I threw <num> dice with <sides> sides on each dice. The dice numbers are <results>, and the total is <total>
+I rolled out <num> <sides> sided dice, and got <results>.  After adding up the numbers in my head I got <total>
+Grand total is <total>.  After rolling <num> <sides> sided dice and adding up <results>.
+All the dice add up to <total>.  I do not feel like reading out all the numbers on <num> <sides> sided dice.
+The dice say <results>.  For a total of <total> on <num> <sides> sided dice.
+The <num> faces read <results>.  Each die has <sides> sides.  The grand total is <total>.
+The sum of <num> dice is <total>.
