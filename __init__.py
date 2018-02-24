@@ -22,6 +22,7 @@ class RollSkill(MycroftSkill):
                                             '/dialog/' + self.lang + '/roll.dialog')
         self.guess = read_stripped_lines(dirname(__file__) +
                                             '/dialog/' + self.lang + '/guess.dialog')
+
     def initialize(self):
         self.load_data_files(dirname(__file__))
 
