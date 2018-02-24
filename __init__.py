@@ -1,6 +1,7 @@
 from os.path import dirname, join
 import os
 import re
+import mycroft.audio
 
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill
@@ -19,7 +20,8 @@ class RollSkill(MycroftSkill):
         super(RollSkill, self).__init__(name="RollSkill")
         self.feedback = read_stripped_lines(dirname(__file__) +
                                             '/dialog/' + self.lang + '/roll.dialog')
-
+        self.guess = read_stripped_lines(dirname(__file__) +
+                                            '/dialog/' + self.lang + '/guess.dialog')
     def initialize(self):
         self.load_data_files(dirname(__file__))
 
@@ -44,16 +46,27 @@ class RollSkill(MycroftSkill):
         else:
             num = '1'
             sides = '6'
-        dice_phrase = num + " " + sides + " sided dice"
+        # Your sanity will be tested when someone asks mycroft to roll 2000 dice!
+        if int(num) > 100:
+            num = 100
+        if int(sides) > 120:
+            sides = 120
+        if int(num) > 20:
+            guess_num = str(int(float(sides) / 2.0 * float(num)))
+            guess_str = self.guess[randrange(len(self.guess))]
+            guess_str = guess_str.replace('<guess>', guess_num)
+            self.speak(guess_str)
+            mycroft.audio.wait_while_speaking()
         dice_array = []
         for i in range(int(num)):
             dice_array.append(randint(1, int(sides)))
-        dice_string = ''
+        dice_results = ''
         for i in dice_array:
-            dice_string = dice_string + " " + str(i)
-        dice_string += ", the total is " + str(sum(dice_array))
-        sentence = feedback.replace('<dice>', dice_phrase)\
-            .replace('<results>', dice_string)
+            dice_results = dice_results + " " + str(i)
+        sentence = feedback.replace('<num>', str(num))\
+            .replace('<sides>', str(sides))\
+            .replace('<total>', str(sum(dice_array)))\
+            .replace('<results>', dice_results)
         self.process = play_mp3(join(dirname(__file__), "mp3", "dice.mp3"))
         self.process.wait()
         self.speak(sentence)
